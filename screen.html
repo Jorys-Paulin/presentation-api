@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>Hello, Screen!</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <link rel="stylesheet" href="/css/screen.css">
+    <link rel="icon" href="/img/baseline-cast-24px.png">
+  </head>
+  <body>
+    <div class="container">
+      <h1 class="text-center my-4">
+        Screen Page<br/>
+        <small class="text-muted">This is the page is controled by the remote page</small>
+      </h1>
+      <div class="alert alert-warning" role="alert" id="receiverAlert" hidden>
+        <code>navigator.presentation.receiver</code> is <code>null</code>. This page must be opened via the <a href="/remote">remote page</a>
+      </div>
+      <div class="row">
+        <div class="col-4">
+          <div class="alert alert-primary" role="alert" id="stateAlert">Waiting for connection</div>
+        </div>
+        <div class="col-8">
+          <div class="card mb-2">
+            <div class="card-header">Connections</div>
+            <ul class="list-group list-group-flush" id="connectionsLogs"></ul>
+          </div>
+          <div class="card mb-2">
+            <div class="card-header">Console</div>
+            <ul class="list-group list-group-flush" id="consoleLogs">
+              <li class="list-group-item text-muted">Console will logs all messages received from remote page</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script src="/js/screen.js" charset="utf-8"></script>
+  </body>
+</html>
