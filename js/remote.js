@@ -175,6 +175,7 @@ const onLoad = () => {
       consoleInput.classList.remove("is-invalid");
       let input = consoleInput.value;
       connection.send(input);
+      consoleInput.value = null;
     } else {
       consoleInput.classList.add("is-invalid");
     }
