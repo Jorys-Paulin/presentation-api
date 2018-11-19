@@ -18,7 +18,7 @@ const consoleSend = document.querySelector("#consoleSend");
 window.connection = null;
 window.request = null;
 
-let screenUrl = ["/screen"];
+let screenUrl = ["./screen"];
 
 const availabilityChanged = (avail = true) => {
   console.log("availabilityChanged", avail);
