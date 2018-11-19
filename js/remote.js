@@ -26,18 +26,9 @@ const availabilityChanged = (avail = true) => {
 };
 
 const setConnection = connection => {
-  console.log("addConnection", connection);
+  console.log("setConnection", connection);
 
   localStorage.setItem("presentationId", connection.id);
-
-  connection.onconnect = e => {
-    console.log("connectionConnect", e);
-    startScreenBtn.disabled = true;
-    reconnectScreenBtn.disabled = true;
-    stopScreenBtn.disabled = false;
-    terminateScreenBtn.disabled = false;
-    errorScreenBadge.hidden = true;
-  };
 
   connection.onclose = e => {
     console.log("connectionClose", e);
@@ -46,6 +37,15 @@ const setConnection = connection => {
     reconnectScreenBtn.disabled = false;
     stopScreenBtn.disabled = true;
     terminateScreenBtn.disabled = true;
+    errorScreenBadge.hidden = true;
+  };
+
+  connection.onconnect = e => {
+    console.log("connectionConnect", e);
+    startScreenBtn.disabled = true;
+    reconnectScreenBtn.disabled = true;
+    stopScreenBtn.disabled = false;
+    terminateScreenBtn.disabled = false;
     errorScreenBadge.hidden = true;
   };
 
