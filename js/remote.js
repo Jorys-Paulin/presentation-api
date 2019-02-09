@@ -13,7 +13,7 @@ const errorScreenBadge = document.querySelector("#errorScreenBadge");
 const consoleClear = document.querySelector("#consoleClear");
 const consoleLogs = document.querySelector("#consoleLogs");
 const consoleInput = document.querySelector("#consoleInput");
-const consoleSend = document.querySelector("#consoleSend");
+const consoleForm = document.querySelector("#consoleForm");
 
 window.connection = null;
 window.request = null;
@@ -170,7 +170,8 @@ const onLoad = () => {
     consoleLogs.innerHTML = null;
   };
 
-  consoleSend.onclick = () => {
+  consoleForm.onsubmit = e => {
+    e.preventDefault();
     if (connection) {
       consoleInput.classList.remove("is-invalid");
       let input = consoleInput.value;

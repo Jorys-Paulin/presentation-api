@@ -35,14 +35,11 @@
             <div class="list-group list-group-flush" id="consoleLogs">
               <div class="list-group-item text-muted">Console will logs all messages received from presentation page</div>
             </div>
-            <div class="card-body">
-              <div class="input-group">
-                <input type="text" class="form-control" placeholder="" aria-label="Example text with button addon" aria-describedby="sendCommand" id="consoleInput">
-                <div class="input-group-append">
-                  <button class="btn btn-outline-secondary" type="button" id="consoleSend">Send</button>
-                </div>
+            <div class="card-body border-top">
+              <form id="consoleForm">
+                <input type="text" class="form-control" id="consoleInput" placeholder="Send a command to the other page">
                 <div class="invalid-feedback">Connection not found</div>
-              </div>
+              </form>
             </div>
           </div>
         </div>

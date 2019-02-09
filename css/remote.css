@@ -1,14 +1,7 @@
 /*
  * This stylesheet is used by the remote page
  */
-
 #consoleLogs {
-  -webkit-mask: linear-gradient(
-    to bottom,
-    white 95%,
-    #ffffff00
-  ); /*Fades the overflow*/
-  height: 50vh;
   max-height: 50vh;
   overflow-y: scroll;
 }
