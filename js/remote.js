@@ -10,7 +10,7 @@ const connectionBinaryTypeVar = document.querySelector(
   "#connectionBinaryTypeVar"
 );
 const connectionIdVar = document.querySelector("#connectionIdVar");
-const connectionStateVar = document.querySelector("#connectionStateVar");
+const connectionStateBadge = document.querySelector("#connectionStateBadge");
 const connectionUrlVar = document.querySelector("#connectionUrlVar");
 
 const presentationAlert = document.querySelector("#presentationAlert");
@@ -40,7 +40,8 @@ const setConnection = connection => {
 
   connectionBinaryTypeVar.innerText = connection.binaryType;
   connectionIdVar.innerText = connection.id;
-  connectionStateVar.innerText = connection.state;
+  connectionStateBadge.setAttribute("class", "badge badge-primary");
+  connectionStateBadge.innerText = connection.state;
   connectionUrlVar.innerText = connection.url;
 
   connection.onclose = e => {
@@ -51,7 +52,8 @@ const setConnection = connection => {
     closeScreenBtn.disabled = true;
     terminateScreenBtn.disabled = true;
     errorScreenBadge.hidden = true;
-    connectionStateVar.innerText = connection.state;
+    connectionStateBadge.setAttribute("class", "badge badge-warning");
+    connectionStateBadge.innerText = connection.state;
 
     appendConsoleEvent(e);
   };
@@ -63,7 +65,8 @@ const setConnection = connection => {
     closeScreenBtn.disabled = false;
     terminateScreenBtn.disabled = false;
     errorScreenBadge.hidden = true;
-    connectionStateVar.innerText = connection.state;
+    connectionStateBadge.setAttribute("class", "badge badge-success");
+    connectionStateBadge.innerText = connection.state;
 
     appendConsoleEvent(e);
   };
@@ -83,6 +86,8 @@ const setConnection = connection => {
     closeScreenBtn.disabled = true;
     terminateScreenBtn.disabled = true;
     errorScreenBadge.hidden = true;
+    connectionStateBadge.setAttribute("class", "badge badge-danger");
+    connectionStateBadge.innerText = connection.state;
 
     appendConsoleEvent(e);
   };
