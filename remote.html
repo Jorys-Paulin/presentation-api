@@ -47,7 +47,7 @@
                 <a href="#" id="consoleClear">Clear</a>
               </div>
             </div>
-            <div class="list-group list-group-flush" id="consoleLogs">
+            <div class="list-group list-group-flush" id="consoleMessagesList">
               <div class="list-group-item text-muted">
                 <p class="mb-1">This is the console. It logs all messages sent by the other page.</p>
                 <p class="mb-1">Whenever the other page sends a message, a <code>message</code> event is sent to this page.</p>
@@ -57,7 +57,7 @@
             <div class="card-footer">
               <form id="consoleForm">
                 <input type="text" class="form-control" id="consoleInput" placeholder="Send a command to the other page">
-                <div class="invalid-feedback">Connection not found</div>
+                <div class="invalid-feedback">Connection not found or closed</div>
               </form>
             </div>
           </div>

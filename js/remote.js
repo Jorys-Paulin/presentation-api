@@ -6,7 +6,9 @@ const reconnectScreenBtn = document.querySelector("#reconnectScreen");
 const closeScreenBtn = document.querySelector("#closeScreen");
 const terminateScreenBtn = document.querySelector("#terminateScreen");
 
-const connectionBinaryTypeVar = document.querySelector("#connectionBinaryTypeVar");
+const connectionBinaryTypeVar = document.querySelector(
+  "#connectionBinaryTypeVar"
+);
 const connectionIdVar = document.querySelector("#connectionIdVar");
 const connectionStateVar = document.querySelector("#connectionStateVar");
 const connectionUrlVar = document.querySelector("#connectionUrlVar");
@@ -16,9 +18,10 @@ const presentationAlert = document.querySelector("#presentationAlert");
 const errorScreenBadge = document.querySelector("#errorScreenBadge");
 
 const consoleClear = document.querySelector("#consoleClear");
-const consoleLogs = document.querySelector("#consoleLogs");
+const consoleMessagesList = document.querySelector("#consoleMessagesList");
 const consoleInput = document.querySelector("#consoleInput");
 const consoleForm = document.querySelector("#consoleForm");
+let consoleMessages = new Set();
 
 window.connection = null;
 window.request = null;
@@ -49,6 +52,8 @@ const setConnection = connection => {
     terminateScreenBtn.disabled = true;
     errorScreenBadge.hidden = true;
     connectionStateVar.innerText = connection.state;
+
+    appendConsoleEvent(e);
   };
 
   connection.onconnect = e => {
@@ -59,20 +64,14 @@ const setConnection = connection => {
     terminateScreenBtn.disabled = false;
     errorScreenBadge.hidden = true;
     connectionStateVar.innerText = connection.state;
+
+    appendConsoleEvent(e);
   };
 
   connection.onmessage = e => {
     console.log("connectionMessage", e);
-    let consoleMessage = document.createElement("div");
-    consoleMessage.className = "list-group-item";
-    consoleMessage.innerHTML = `
-      <div class="d-flex w-100 justify-content-between">
-        <small class="text-primary">${connection.id}</small>
-        <small class="text-muted">${new Date().toLocaleTimeString()}</small>
-      </div>
-      <p class="mb-1">${e.data}</p>
-    `;
-    consoleLogs.appendChild(consoleMessage);
+
+    appendConsoleEvent(e);
   };
 
   connection.onterminate = e => {
@@ -84,6 +83,8 @@ const setConnection = connection => {
     closeScreenBtn.disabled = true;
     terminateScreenBtn.disabled = true;
     errorScreenBadge.hidden = true;
+
+    appendConsoleEvent(e);
   };
 
   window.connection = connection;
@@ -108,6 +109,27 @@ const reconnectScreenError = err => {
 
   removeConnection();
   reconnectScreenBtn.disabled = true;
+};
+
+const appendConsoleEvent = e => {
+  consoleMessages.add(e);
+
+  let messageItem = document.createElement("div");
+  messageItem.setAttribute("class", "list-group-item");
+  messageItem.innerHTML = `
+    <div class="d-flex w-100 justify-content-between">
+      <span>
+        <code class="mr-2">${e.type}</code>
+        <var class="text-muted">${e.currentTarget.id}</var>
+      </span>
+      <small class="text-muted">${new Date().toLocaleTimeString()}</small>
+    </div>
+    ${e.data ? `<pre class="mb-0">${e.data}</pre>` : ""}
+    ${e.reason ? `<samp class="mb-0">${e.reason}</samp>` : ""}
+  `;
+
+  consoleMessagesList.appendChild(messageItem);
+  consoleMessagesList.scrollTop = consoleMessagesList.scrollHeight;
 };
 
 const onLoad = () => {
@@ -179,12 +201,13 @@ const onLoad = () => {
   };
 
   consoleClear.onclick = () => {
-    consoleLogs.innerHTML = null;
+    consoleMessagesList.innerHTML = `<li class="list-group-item text-muted">The console was cleared</li>`;
+    consoleMessages.clear();
   };
 
   consoleForm.onsubmit = e => {
     e.preventDefault();
-    if (connection) {
+    if (connection && connection.state === "connected") {
       consoleInput.classList.remove("is-invalid");
       let input = consoleInput.value;
       connection.send(input);
