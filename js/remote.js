@@ -3,8 +3,13 @@
  */
 const startScreenBtn = document.querySelector("#startScreen");
 const reconnectScreenBtn = document.querySelector("#reconnectScreen");
-const stopScreenBtn = document.querySelector("#stopScreen");
+const closeScreenBtn = document.querySelector("#closeScreen");
 const terminateScreenBtn = document.querySelector("#terminateScreen");
+
+const connectionBinaryTypeVar = document.querySelector("#connectionBinaryTypeVar");
+const connectionIdVar = document.querySelector("#connectionIdVar");
+const connectionStateVar = document.querySelector("#connectionStateVar");
+const connectionUrlVar = document.querySelector("#connectionUrlVar");
 
 const presentationAlert = document.querySelector("#presentationAlert");
 
@@ -30,23 +35,30 @@ const setConnection = connection => {
 
   localStorage.setItem("presentationId", connection.id);
 
+  connectionBinaryTypeVar.innerText = connection.binaryType;
+  connectionIdVar.innerText = connection.id;
+  connectionStateVar.innerText = connection.state;
+  connectionUrlVar.innerText = connection.url;
+
   connection.onclose = e => {
     console.log("connectionClose", e);
     window.connection = null;
     startScreenBtn.disabled = true;
     reconnectScreenBtn.disabled = false;
-    stopScreenBtn.disabled = true;
+    closeScreenBtn.disabled = true;
     terminateScreenBtn.disabled = true;
     errorScreenBadge.hidden = true;
+    connectionStateVar.innerText = connection.state;
   };
 
   connection.onconnect = e => {
     console.log("connectionConnect", e);
     startScreenBtn.disabled = true;
     reconnectScreenBtn.disabled = true;
-    stopScreenBtn.disabled = false;
+    closeScreenBtn.disabled = false;
     terminateScreenBtn.disabled = false;
     errorScreenBadge.hidden = true;
+    connectionStateVar.innerText = connection.state;
   };
 
   connection.onmessage = e => {
@@ -69,7 +81,7 @@ const setConnection = connection => {
     localStorage.removeItem("presentationId");
     startScreenBtn.disabled = false;
     reconnectScreenBtn.disabled = true;
-    stopScreenBtn.disabled = true;
+    closeScreenBtn.disabled = true;
     terminateScreenBtn.disabled = true;
     errorScreenBadge.hidden = true;
   };
@@ -156,7 +168,7 @@ const onLoad = () => {
     }
   };
 
-  stopScreenBtn.onclick = () => {
+  closeScreenBtn.onclick = () => {
     console.log("stopScreen", connection);
     connection.close();
   };

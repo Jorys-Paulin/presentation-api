@@ -18,11 +18,26 @@
       </div>
       <div class="row">
         <div class="col col-sm-12 col-lg-4">
-          <button type="button" class="btn btn-success btn-block" id="startScreen" disabled>Start</button>
-          <button type="button" class="btn btn-info btn-block" id="reconnectScreen" disabled>Reconnect</button>
-          <button type="button" class="btn btn-warning btn-block" id="stopScreen" disabled>Stop</button>
-          <button type="button" class="btn btn-danger btn-block" id="terminateScreen" disabled>Terminate</button>
-          <span class="badge badge-danger w-100" id="errorScreenBadge" hidden>Unable to find screen</span>
+          <div class="card">
+            <div class="card-header">Connection</div>
+            <div class="card-body border-bottom">
+              <h5 class="card-title">PresentationConnection Object</h5>
+              <p class="card-text">The PresentationConnection Object adds properties and methods to control the current presentation session</p>
+            </div>
+            <div class="card-body">
+              <button type="button" class="btn btn-success btn-block" id="startScreen" title="Starts a new Presentation session" disabled>Start</button>
+              <button type="button" class="btn btn-info btn-block" id="reconnectScreen" title="Reconnects to a Presentation session" disabled>Reconnect</button>
+              <button type="button" class="btn btn-warning btn-block" id="closeScreen" title="Closes a Presentation session" disabled>Close</button>
+              <button type="button" class="btn btn-danger btn-block" id="terminateScreen" title="Terminates a Presentation session" disabled>Terminate</button>
+              <span class="badge badge-danger w-100" id="errorScreenBadge" hidden>Unable to find screen</span>
+            </div>
+            <ul class="list-group list-group-flush">
+              <li class="list-group-item d-flex flex-wrap justify-content-between align-items-center"><code>binaryType</code><var id="connectionBinaryTypeVar">null</var></li>
+              <li class="list-group-item d-flex flex-wrap justify-content-between align-items-center"><code>id</code><var id="connectionIdVar">null</var></li>
+              <li class="list-group-item d-flex flex-wrap justify-content-between align-items-center"><code>state</code><var id="connectionStateVar">null</var></li>
+              <li class="list-group-item d-flex flex-wrap justify-content-between align-items-center"><code>url</code><var id="connectionUrlVar">null</var></li>
+            </ul>
+          </div>
         </div>
         <div class="col col-sm-12 col-lg-8">
           <div class="card">
@@ -39,7 +54,7 @@
                 <p class="mb-1">The sending page can also send data, which will be accessible via the <code>data</code> property of the event.</p>
               </div>
             </div>
-            <div class="card-body">
+            <div class="card-footer">
               <form id="consoleForm">
                 <input type="text" class="form-control" id="consoleInput" placeholder="Send a command to the other page">
                 <div class="invalid-feedback">Connection not found</div>
