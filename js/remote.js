@@ -74,7 +74,13 @@ const setConnection = connection => {
   connection.onmessage = e => {
     console.log("connectionMessage", e);
 
-    appendConsoleEvent(e);
+    if (typeof e.data === "string") {
+      e.received = true;
+      appendConsoleEvent(e);
+    } else {
+      e.data = "The message wasn't a String";
+      appendConsoleEvent(e);
+    }
   };
 
   connection.onterminate = e => {
@@ -123,10 +129,12 @@ const appendConsoleEvent = e => {
   messageItem.setAttribute("class", "list-group-item");
   messageItem.innerHTML = `
     <div class="d-flex w-100 justify-content-between">
-      <span>
+      <p class="mb-0">
+        ${e.sent ? `<span class="text-success">&#8593;</span>` : ""}
+        ${e.received ? `<span class="text-warning">&#8595;</span>` : ""}
         <code class="mr-2">${e.type}</code>
-        <var class="text-muted">${e.currentTarget.id}</var>
-      </span>
+        ${e.currentTarget ? `<var class="text-muted">${e.currentTarget.id}</var>` : ""}
+      </p>
       <small class="text-muted">${new Date().toLocaleTimeString()}</small>
     </div>
     ${e.data ? `<pre class="mb-0">${e.data}</pre>` : ""}
@@ -217,6 +225,8 @@ const onLoad = () => {
       let input = consoleInput.value;
       connection.send(input);
       consoleInput.value = null;
+
+      appendConsoleEvent({ type: "message", data: input, sent: true });
     } else {
       consoleInput.classList.add("is-invalid");
     }
