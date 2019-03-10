@@ -17,7 +17,7 @@ const presentationAlert = document.querySelector("#presentationAlert");
 
 const errorScreenBadge = document.querySelector("#errorScreenBadge");
 
-const consoleClear = document.querySelector("#consoleClear");
+const consoleClearBtn = document.querySelector("#consoleClearBtn");
 const consoleMessagesList = document.querySelector("#consoleMessagesList");
 const consoleInput = document.querySelector("#consoleInput");
 const consoleForm = document.querySelector("#consoleForm");
@@ -75,7 +75,6 @@ const setConnection = connection => {
     console.log("connectionMessage", e);
 
     if (typeof e.data === "string") {
-      e.received = true;
       appendConsoleEvent(e);
     } else {
       e.data = "The message wasn't a String";
@@ -221,8 +220,8 @@ const onLoad = () => {
     connection.terminate();
   };
 
-  consoleClear.onclick = () => {
-    consoleMessagesList.innerHTML = `<li class="list-group-item text-muted">The console was cleared</li>`;
+  consoleClearBtn.onclick = () => {
+    consoleMessagesList.innerHTML = `<div class="list-group-item text-muted">The console was cleared</div>`;
     consoleMessages.clear();
   };
 
