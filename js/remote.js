@@ -130,10 +130,18 @@ const appendConsoleEvent = e => {
   messageItem.innerHTML = `
     <div class="d-flex w-100 justify-content-between">
       <p class="mb-0">
-        ${e.sent ? `<span class="text-success">&#8593;</span>` : ""}
-        ${e.received ? `<span class="text-warning">&#8595;</span>` : ""}
-        <code class="mr-2">${e.type}</code>
-        ${e.currentTarget ? `<var class="text-muted">${e.currentTarget.id}</var>` : ""}
+        ${
+          e.currentTarget
+            ? `
+          <span class="badge badge-warning">screen</span>
+          <code>${e.type}</code>
+          <var class="text-muted">${e.currentTarget.id}</var>
+          `
+            : `
+          <span class="badge badge-success">remote</span>
+          <code>${e.type}</code>
+          `
+        }
       </p>
       <small class="text-muted">${new Date().toLocaleTimeString()}</small>
     </div>
@@ -222,11 +230,12 @@ const onLoad = () => {
     e.preventDefault();
     if (connection && connection.state === "connected") {
       consoleInput.classList.remove("is-invalid");
-      let input = consoleInput.value;
-      connection.send(input);
+      let data = consoleInput.value;
+      connection.send(data);
       consoleInput.value = null;
 
-      appendConsoleEvent({ type: "message", data: input, sent: true });
+      let messageEvent = new MessageEvent("message", { data });
+      appendConsoleEvent(messageEvent);
     } else {
       consoleInput.classList.add("is-invalid");
     }
