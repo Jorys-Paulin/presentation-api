@@ -8,7 +8,7 @@
     <link rel="icon" href="./img/baseline-cast-24px.png">
   </head>
   <body>
-    <div class="container">
+    <div class="container-fluid">
       <h1 class="text-center my-4">
         Screen Page<br/>
         <small class="text-muted">This is the page is controled by the remote page</small>
@@ -17,19 +17,60 @@
         <code>navigator.presentation.receiver</code> is <code>null</code>. This page must be opened via the <a href="./remote">remote page</a>
       </div>
       <div class="row">
-        <div class="col col-sm-12 col-lg-4">
-          <div class="alert alert-primary" role="alert" id="stateAlert">Waiting for connection</div>
-        </div>
-        <div class="col col-sm-12 col-lg-8">
-          <div class="card mb-2">
-            <div class="card-header">Connections</div>
-            <ul class="list-group list-group-flush" id="connectionsLogs"></ul>
+        <div class="col-3">
+          <div class="nav flex-column nav-pills" aria-orientation="vertical">
+            <a href="#" class="nav-link active" role="tab" id="currentConnectionTab">No connection</a>
           </div>
-          <div class="card mb-2">
-            <div class="card-header">Console</div>
-            <ul class="list-group list-group-flush" id="consoleLogs">
-              <li class="list-group-item text-muted">Console will logs all messages received from remote page</li>
+        </div>
+        <div class="col-3">
+          <div class="card">
+            <div class="card-header">Presentation Screen
+            </div>
+            <ul class="list-group list-group-flush">
+              <li class="list-group-item d-flex flex-wrap justify-content-between align-items-center">
+                <code>width</code>
+                <var id="screenWidthVar">null</var>
+              </li>
+              <li class="list-group-item d-flex flex-wrap justify-content-between align-items-center">
+                <code>height</code>
+                <var id="screenHeightVar">null</var>
+              </li>
             </ul>
+          </div>
+        </div>
+        <div class="col-3">
+          <div class="card mb-2">
+            <div class="card-header">Connection</div>
+            <ul class="list-group list-group-flush">
+              <li class="list-group-item d-flex flex-wrap justify-content-between align-items-center">
+                <code>binaryType</code>
+                <var id="connectionBinaryTypeVar">null</var>
+              </li>
+              <li class="list-group-item d-flex flex-wrap justify-content-between align-items-center">
+                <code>id</code>
+                <var id="connectionIdVar">null</var>
+              </li>
+              <li class="list-group-item d-flex flex-wrap justify-content-between align-items-center">
+                <code>state</code>
+                <span class="badge badge-secondary" id="connectionStateBadge">null</span>
+              </li>
+              <li class="list-group-item d-flex flex-wrap justify-content-between align-items-center">
+                <code>url</code>
+                <var id="connectionUrlVar">null</var>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div class="col-3">
+          <div class="card">
+            <div class="card-header">Console</div>
+            <div class="list-group list-group-flush" id="consoleMessagesList">
+              <div class="list-group-item text-muted">
+                <p class="mb-1">This is the console. It logs all messages sent by the other page.</p>
+                <p class="mb-1">Whenever the other page sends a message, a <code>message</code> event is sent to this page.</p>
+                <p class="mb-1">The sending page can also send data, which will be accessible via the <code>data</code> property of the event.</p>
+              </div>
+            </div>
           </div>
         </div>
       </div>

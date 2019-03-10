@@ -1,96 +1,106 @@
 /**
  * Handles the screen page
  */
-const receiverAlert = document.querySelector("#receiverAlert");
-const stateAlert = document.querySelector("#stateAlert");
-const connectionsLogs = document.querySelector("#connectionsLogs");
-const consoleLogs = document.querySelector("#consoleLogs");
+const currentConnectionTab = document.querySelector("#currentConnectionTab");
+
+const screenWidthVar = document.querySelector("#screenWidthVar");
+const screenHeightVar = document.querySelector("#screenHeightVar");
+
+const connectionBinaryTypeVar = document.querySelector(
+  "#connectionBinaryTypeVar"
+);
+const connectionIdVar = document.querySelector("#connectionIdVar");
+const connectionStateBadge = document.querySelector("#connectionStateBadge");
+const connectionUrlVar = document.querySelector("#connectionUrlVar");
+
+const consoleMessagesList = document.querySelector("#consoleMessagesList");
+let consoleMessages = new Set();
 
 window.connection = null;
 
-const setConnectionMessage = connection => {
-  let connectionMessage = connectionsLogs.querySelector(
-    `[data-connection="${connection.id}"]`
-  );
-  if (!connectionMessage) {
-    connectionMessage = document.createElement("li");
-    connectionMessage.className =
-      "list-group-item d-flex justify-content-between align-items-center";
-    connectionMessage.dataset.connection = connection.id;
-    connectionsLogs.appendChild(connectionMessage);
-  }
-  connectionMessage.innerHTML = `
-    ${connection.id}
-    <span class="badge badge-success badge-pill">${connection.state}</span>
+const appendConsoleEvent = e => {
+  consoleMessages.add(e);
+
+  let messageItem = document.createElement("div");
+  messageItem.setAttribute("class", "list-group-item");
+  messageItem.innerHTML = `
+    <div class="d-flex w-100 justify-content-between">
+      <p class="mb-0">
+        <code>${e.type}</code>
+        <var class="text-muted">${e.currentTarget.id}</var>
+      </p>
+      <small class="text-muted">${new Date().toLocaleTimeString()}</small>
+    </div>
+    ${e.data ? `<pre class="mb-0">${e.data}</pre>` : ""}
+    ${e.reason ? `<samp class="mb-0">${e.reason}</samp>` : ""}
   `;
+
+  consoleMessagesList.appendChild(messageItem);
+  consoleMessagesList.scrollTop = consoleMessagesList.scrollHeight;
 };
 
 const setConnection = connection => {
   console.log("setConnection", connection);
 
+  currentConnectionTab.innerText = connection.id;
+
+  connectionBinaryTypeVar.innerText = connection.binaryType;
+  connectionIdVar.innerText = connection.id;
+  connectionStateBadge.setAttribute("class", "badge badge-primary");
+  connectionStateBadge.innerText = connection.state;
+  connectionUrlVar.innerText = connection.url;
+
   connection.onclose = e => {
     console.log("connectionClose", e);
-    stateAlert.innerText = "Closed";
-    stateAlert.classList.remove("alert-success");
-    stateAlert.classList.add("alert-danger");
-    let connectionBadge = connectionsLogs.querySelector(
-      `[data-connection="${connection.id}"] .badge`
-    );
-    connectionBadge.classList.remove("badge-success");
-    connectionBadge.classList.add("badge-danger");
-    connectionBadge.innerText = "closed";
-    //window.connection = null;
+
+    connectionStateBadge.setAttribute("class", "badge badge-warning");
+    connectionStateBadge.innerText = connection.state;
+
+    appendConsoleEvent(e);
   };
 
   connection.onconnect = e => {
     console.log("connectionConnect", e);
-    stateAlert.innerText = "Connected";
-    stateAlert.classList.add("alert-success");
-    stateAlert.classList.remove("alert-danger");
+
+    connectionStateBadge.setAttribute("class", "badge badge-success");
+    connectionStateBadge.innerText = connection.state;
+
+    appendConsoleEvent(e);
   };
 
   connection.onmessage = e => {
     console.log("connectionMessage", e);
-    let consoleMessage = document.createElement("div");
-    consoleMessage.className = "list-group-item";
-    consoleMessage.innerHTML = `
-      <div class="d-flex w-100 justify-content-between">
-        <small class="text-primary">${connection.id}</small>
-        <small class="text-muted">${new Date().toLocaleTimeString()}</small>
-      </div>
-      <p class="mb-1">${e.data}</p>
-    `;
-    consoleLogs.appendChild(consoleMessage);
-    consoleLogs.scrollTo(0, consoleLogs.scrollHeight);
+
+    appendConsoleEvent(e);
   };
 
   connection.onterminate = e => {
     console.log("connectionTerminate", e);
-    stateAlert.innerText = "Terminated";
-    stateAlert.classList.remove("alert-success");
-    stateAlert.classList.add("alert-danger");
-    let connectionBadge = connectionsLogs.querySelector(
-      `[data-connection="${connection.id}"] .badge`
-    );
-    connectionBadge.classList.remove("badge-success");
-    connectionBadge.classList.add("badge-danger");
-    connectionBadge.innerText = "terminated";
+
+    connectionStateBadge.setAttribute("class", "badge badge-danger");
+    connectionStateBadge.innerText = connection.state;
+
     window.connection = null;
   };
 
   if (connection.state === "connected") {
-    stateAlert.innerText = "Connected";
-    stateAlert.classList.add("alert-success");
-    stateAlert.classList.remove("alert-danger");
+    connectionStateBadge.setAttribute("class", "badge badge-success");
+    connectionStateBadge.innerText = connection.state;
   }
-
-  setConnectionMessage(connection);
 
   window.connection = connection;
 };
 
 const onLoad = () => {
   console.log("windowLoad");
+
+  screenWidthVar.innerText = window.innerWidth;
+  screenHeightVar.innerText = window.innerHeight;
+
+  window.onresize = () => {
+    screenWidthVar.innerText = window.innerWidth;
+    screenHeightVar.innerText = window.innerHeight;
+  };
 
   if (navigator.presentation.receiver) {
     console.log("receiverFound");
