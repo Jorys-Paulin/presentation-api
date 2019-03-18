@@ -1,8 +1,6 @@
 /**
  * Handles the screen page
  */
-const currentConnectionTab = document.querySelector("#currentConnectionTab");
-
 const screenWidthVar = document.querySelector("#screenWidthVar");
 const screenHeightVar = document.querySelector("#screenHeightVar");
 
@@ -41,8 +39,6 @@ const appendConsoleEvent = e => {
 
 const setConnection = connection => {
   console.log("setConnection", connection);
-
-  currentConnectionTab.innerText = connection.id;
 
   connectionBinaryTypeVar.innerText = connection.binaryType;
   connectionIdVar.innerText = connection.id;
