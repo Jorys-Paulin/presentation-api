@@ -1,9 +1,0 @@
-/*
- * This stylesheet is used by the remote page
- */
-
-#consoleLogs {
-  height: 50vh;
-  max-height: 50vh;
-  overflow-y: scroll;
-}
