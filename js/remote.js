@@ -12,6 +12,9 @@ const connectionBinaryTypeVar = document.querySelector(
 const connectionIdVar = document.querySelector("#connectionIdVar");
 const connectionStateBadge = document.querySelector("#connectionStateBadge");
 const connectionUrlVar = document.querySelector("#connectionUrlVar");
+const connectionResolutionVar = document.querySelector(
+  "#connectionResolutionVar"
+);
 
 const presentationAlert = document.querySelector("#presentationAlert");
 
@@ -75,6 +78,10 @@ const setConnection = connection => {
     console.log("connectionMessage", e);
 
     if (typeof e.data === "string") {
+      let data = JSON.parse(e.data);
+      if (data.type === "REMOTE_RESOLUTION") {
+        connectionResolutionVar.innerText = `${data.width}x${data.height}`;
+      }
       appendConsoleEvent(e);
     } else {
       e.data = "The message wasn't a String";

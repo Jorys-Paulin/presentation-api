@@ -1,8 +1,9 @@
 /**
  * Handles the screen page
  */
-const screenWidthVar = document.querySelector("#screenWidthVar");
-const screenHeightVar = document.querySelector("#screenHeightVar");
+const connectionResolutionVar = document.querySelector(
+  "#connectionResolutionVar"
+);
 
 const connectionBinaryTypeVar = document.querySelector(
   "#connectionBinaryTypeVar"
@@ -82,6 +83,14 @@ const setConnection = connection => {
   if (connection.state === "connected") {
     connectionStateBadge.setAttribute("class", "badge badge-success");
     connectionStateBadge.innerText = connection.state;
+
+    connection.send(
+      JSON.stringify({
+        type: "REMOTE_RESOLUTION",
+        width: window.innerWidth,
+        height: window.innerHeight
+      })
+    );
   }
 
   window.connection = connection;
@@ -90,12 +99,24 @@ const setConnection = connection => {
 const onLoad = () => {
   console.log("windowLoad");
 
-  screenWidthVar.innerText = window.innerWidth;
-  screenHeightVar.innerText = window.innerHeight;
+  connectionResolutionVar.innerText = `${window.innerWidth}x${
+    window.innerHeight
+  }`;
 
   window.onresize = () => {
-    screenWidthVar.innerText = window.innerWidth;
-    screenHeightVar.innerText = window.innerHeight;
+    connectionResolutionVar.innerText = `${window.innerWidth}x${
+      window.innerHeight
+    }`;
+
+    if (connection) {
+      connection.send(
+        JSON.stringify({
+          type: "REMOTE_RESOLUTION",
+          width: window.innerWidth,
+          height: window.innerHeight
+        })
+      );
+    }
   };
 
   if (navigator.presentation.receiver) {
